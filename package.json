@@ -1,0 +1,46 @@
+{
+  "name": "apartments4newark",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/prerender.mjs",
+    "build:preview": "vite build --mode preview",
+    "preview": "vite preview",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "test": "node scripts/test-units.mjs && node scripts/check-i18n.mjs && node scripts/test-db.mjs",
+    "seed:sql": "node scripts/make-seed-sql.mjs",
+    "test:db": "node scripts/test-db.mjs",
+    "test:e2e": "node scripts/test-e2e.mjs",
+    "test:supabase": "node scripts/test-supabase-mode.mjs"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-select": "^2.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@supabase/supabase-js": "^2.117.0",
+    "@tanstack/react-query": "^5.84.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.18.4",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "axe-core": "^4.13.0",
+    "playwright-core": "^1.63.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "vite": "^6.0.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}
