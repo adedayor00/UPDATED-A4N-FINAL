@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MapPin, MessageCircle, Mail, Phone } from "lucide-react";
+import { MapPin, MessageCircle, Mail, Phone, Send, Instagram } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useT } from "@/lib/i18n";
 import { cityPath } from "@/lib/listing";
-import { EMAIL, PHONE_DISPLAY, SMS, whatsappUrl } from "@/lib/contact";
+import { EMAIL, PHONE_DISPLAY, SMS, whatsappUrl, telegramUrl, instagramUrl, TELEGRAM_USERNAME, INSTAGRAM_USERNAME } from "@/lib/contact";
 
 const FOOTER_CITIES = ["Newark", "East Orange", "Irvington", "Maplewood"];
 
@@ -90,6 +90,20 @@ export default function Footer() {
                   <Mail className="h-4 w-4 shrink-0" /> {EMAIL}
                 </a>
               </li>
+              {telegramUrl() && (
+                <li>
+                  <a href={telegramUrl()} target="_blank" rel="noreferrer" className={`${link} gap-2`}>
+                    <Send className="h-4 w-4" /> Telegram @{TELEGRAM_USERNAME}
+                  </a>
+                </li>
+              )}
+              {instagramUrl() && (
+                <li>
+                  <a href={instagramUrl()} target="_blank" rel="noreferrer" className={`${link} gap-2`}>
+                    <Instagram className="h-4 w-4" /> Instagram DM @{INSTAGRAM_USERNAME}
+                  </a>
+                </li>
+              )}
               <li>
                 <span className={`${link} gap-2`}>
                   <MapPin className="h-4 w-4" /> Newark, NJ
