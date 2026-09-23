@@ -1,0 +1,111 @@
+{
+  "name": "Property",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short label shown in listings (e.g. city or street)"
+    },
+    "address": {
+      "type": "string",
+      "description": "Full street address or 'Address on request'"
+    },
+    "city": {
+      "type": "string",
+      "description": "Any New Jersey city / town"
+    },
+    "neighborhood": {
+      "type": "string",
+      "description": "Ward / area (e.g. West Ward, North Newark)"
+    },
+    "bedrooms": {
+      "type": "number",
+      "default": 3
+    },
+    "bathrooms": {
+      "type": "number",
+      "default": 1
+    },
+    "rent": {
+      "type": "number",
+      "description": "Monthly rent in USD"
+    },
+    "rent_type": {
+      "type": "string",
+      "enum": [
+        "per_room",
+        "whole_unit"
+      ],
+      "default": "whole_unit"
+    },
+    "rooms_free": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of rooms currently free (0 = whole unit)"
+    },
+    "availability": {
+      "type": "string",
+      "description": "When it is available (e.g. 'End of June', 'Now')"
+    },
+    "utilities": {
+      "type": "string",
+      "description": "Utilities note (e.g. 'Ask', 'Included')"
+    },
+    "deposit": {
+      "type": "string",
+      "description": "Deposit note (e.g. 'Ask', '1 month')"
+    },
+    "description": {
+      "type": "string",
+      "description": "What is included / extra details"
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Photo URLs (common space, rooms, kitchen...)"
+    },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "description": "e.g. SHARED \u00b7 1 BATH"
+          },
+          "price": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "free",
+              "taken"
+            ],
+            "default": "free"
+          }
+        }
+      },
+      "description": "Individual rooms within a shared apartment"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "published"
+      ],
+      "default": "pending",
+      "description": "Approval state \u2014 pending listings are hidden from the public site until the admin publishes them"
+    }
+  },
+  "required": [
+    "title",
+    "rent",
+    "city"
+  ]
+}
