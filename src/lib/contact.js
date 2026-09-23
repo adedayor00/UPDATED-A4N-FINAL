@@ -5,12 +5,12 @@
 export const PHONE_DISPLAY = "(862) 600-0056";
 export const WHATSAPP = "18626000056"; // country code + number, digits only
 export const SMS = "+18626000056";
-export const EMAIL = "hello@apartments4newark.com";
+export const EMAIL = "admin@apartments4newark.com";
 
 // Optional channels. Leave "" to hide the button everywhere. Only fill these
 // in with handles you actually own, e.g. INSTAGRAM_USERNAME = "apartments4newark".
-export const INSTAGRAM_USERNAME = "";
-export const TELEGRAM_USERNAME = "";
+export const INSTAGRAM_USERNAME = "adedayo";
+export const TELEGRAM_USERNAME = "NEXUS09111";
 
 // Optional: the first name renters will be talking to (shown on the About
 // page). Leave "" to say "us".
