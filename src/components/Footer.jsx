@@ -24,6 +24,11 @@ export default function Footer() {
               {t("footer.browse")}
             </h2>
             <ul className="space-y-1.5 text-[13px]">
+              <li>
+                <Link to="/listings" className={link}>
+                  {t("sitemap.all")}
+                </Link>
+              </li>
               {FOOTER_CITIES.map((c) => (
                 <li key={c}>
                   <Link to={cityPath(c)} className={link}>
@@ -36,6 +41,11 @@ export default function Footer() {
                   {t("footer.roomsIn", { city: "Newark" })}
                 </Link>
               </li>
+              <li>
+                <Link to="/cities" className={link}>
+                  {t("pages.allCities")}
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -43,6 +53,16 @@ export default function Footer() {
               {t("footer.site")}
             </h2>
             <ul className="space-y-1.5 text-[13px]">
+              <li>
+                <Link to="/how-it-works" className={link}>
+                  {t("nav.how")}
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className={link}>
+                  {t("nav.sendRequest")}
+                </Link>
+              </li>
               <li>
                 <Link to="/list-your-place" className={link}>
                   {t("nav.listYourPlace")}

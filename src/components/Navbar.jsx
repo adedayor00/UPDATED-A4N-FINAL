@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, LayoutDashboard, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/AuthContext";
 import { useT } from "@/lib/i18n";
 import Logo, { Wordmark, LogoMark } from "@/components/Logo";
-import SectionLink, { useSectionNav } from "@/components/SectionLink";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const goSection = useSectionNav();
   const { isAdmin } = useAuth();
   const { t } = useT();
 
@@ -29,9 +27,9 @@ export default function Navbar() {
   }, [open]);
 
   const links = [
-    { label: t("nav.listings"), section: "listings" },
-    { label: t("nav.cities"), section: "cities" },
-    { label: t("nav.how"), section: "how" },
+    { label: t("nav.listings"), to: "/listings" },
+    { label: t("nav.cities"), to: "/cities" },
+    { label: t("nav.how"), to: "/how-it-works" },
     { label: t("nav.listYourPlace"), to: "/list-your-place" },
     { label: t("nav.about"), to: "/about" },
   ];
@@ -48,17 +46,15 @@ export default function Navbar() {
           </Link>
 
           <nav aria-label="Main" className="hidden lg:flex items-center gap-0.5">
-            {links.map((l) =>
-              l.to ? (
-                <Link key={l.label} to={l.to} className={linkClass}>
-                  {l.label}
-                </Link>
-              ) : (
-                <SectionLink key={l.label} to={l.section} className={linkClass}>
-                  {l.label}
-                </SectionLink>
-              ),
-            )}
+            {links.map((l) => (
+              <NavLink
+                key={l.label}
+                to={l.to}
+                className={({ isActive }) => `${linkClass} ${isActive ? "!text-foreground" : ""}`}
+              >
+                {l.label}
+              </NavLink>
+            ))}
           </nav>
 
           <div className="hidden lg:flex items-center gap-1">
@@ -68,7 +64,7 @@ export default function Navbar() {
                 <LayoutDashboard /> {t("nav.dashboard")}
               </Button>
             ) : (
-              <Button size="sm" onClick={() => goSection("contact")} className="h-9 gap-1.5 px-4">
+              <Button size="sm" onClick={() => navigate("/contact")} className="h-9 gap-1.5 px-4">
                 <MessageCircle /> {t("nav.sendRequest")}
               </Button>
             )}
@@ -109,27 +105,18 @@ export default function Navbar() {
             </button>
           </div>
           <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-5 py-6">
-            {links.map((l) =>
-              l.to ? (
-                <Link
-                  key={l.label}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-2 py-3 font-heading text-2xl font-semibold tracking-tight hover:bg-secondary"
-                >
-                  {l.label}
-                </Link>
-              ) : (
-                <SectionLink
-                  key={l.label}
-                  to={l.section}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-2 py-3 font-heading text-2xl font-semibold tracking-tight hover:bg-secondary"
-                >
-                  {l.label}
-                </SectionLink>
-              ),
-            )}
+            {links.map((l) => (
+              <NavLink
+                key={l.label}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `rounded-xl px-2 py-3 font-heading text-2xl font-semibold tracking-tight hover:bg-secondary ${isActive ? "text-[#0071e3]" : ""}`
+                }
+              >
+                {l.label}
+              </NavLink>
+            ))}
             <div className="mt-6">
               <p className="mb-3 px-2 text-[12px] font-semibold uppercase tracking-wide text-[#6e6e73]">
                 {t("nav.language")}
@@ -146,7 +133,7 @@ export default function Navbar() {
               <Button
                 onClick={() => {
                   setOpen(false);
-                  goSection("contact");
+                  navigate("/contact");
                 }}
                 className="h-12 gap-2"
               >
