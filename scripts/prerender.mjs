@@ -19,6 +19,7 @@ import {
   listingDescription,
   listingPath,
   lowestRent,
+  publicPhotos,
   roomsFree,
 } from "../src/lib/listing.js";
 
@@ -219,7 +220,7 @@ for (const p of all) {
       route,
       title: `${p.title}, ${p.city} NJ — ${price}`,
       description: listingDescription(p),
-      image: p.photos?.[0],
+      image: publicPhotos(p)[0],
       jsonLd: {
         "@context": "https://schema.org",
         "@graph": [
@@ -228,7 +229,7 @@ for (const p of all) {
             name: p.title,
             description: p.description || listingDescription(p),
             url,
-            image: p.photos?.length ? p.photos : undefined,
+            image: publicPhotos(p).length ? publicPhotos(p) : undefined,
             numberOfRooms: p.bedrooms,
             numberOfBathroomsTotal: p.bathrooms,
             address: { "@type": "PostalAddress", addressLocality: p.city, addressRegion: "NJ", addressCountry: "US" },
