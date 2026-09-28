@@ -23,6 +23,7 @@ Demo login: `demo@apartments4newark.com` / `demo1234` (shown on /login in demo m
 - **All renter-facing text goes through `t()`** with keys in `src/locales/{en,es,pt}.js`. `npm run check:i18n` fails if a key is missing. The admin dashboard is English only.
 - Approval workflow: new listings are `pending`. The public sees a listing only when `isPubliclyVisible()` in `src/lib/listing.js` says so (published, confirmed in the last 30 days, and not fully taken).
 - **Fair housing:** never add a "no vouchers" option or any filter or copy that screens people by a protected class (NJ Law Against Discrimination includes source of lawful income).
+- **Real pages, not scroll jumps:** the menu links go to `/listings`, `/cities`, `/how-it-works` and `/contact`; the homepage shows previews of each. Searches (hero, keywords) land on `/listings?…`. Adding a city landmark photo means adding it to `cityPhotos.js` with its license and author (CC BY/BY-SA need credit).
 - Accessibility: 44px tap targets, labeled fields, axe clean (the e2e test fails on violations), `prefers-reduced-motion` respected. Check at 390px width: no horizontal scroll (the e2e test checks this too).
 - `src/lib/listing.js`, `filters.js`, `cityStats.js` and `validate.js` must stay pure (no React, no `@/` imports), because the Node scripts import them.
 
@@ -41,7 +42,8 @@ src/
   components/CityCombobox.jsx  searchable town picker used by every city field
   lib/contact.js           phone/WhatsApp/email; optional Instagram/Telegram (hidden when empty)
   lib/notify.js            Netlify Forms email copy of every submission
-  pages/                   Home, CityPage, PropertyDetail, ListYourPlace, About, Privacy, Keywords, SiteMap, auth
+  pages/                   Home, Listings, Cities, HowItWorksPage, Contact, CityPage, PropertyDetail, ListYourPlace, About, Privacy, Keywords, SiteMap, auth
+  lib/cityPhotos.js        landmark photo per city (Wikimedia Commons, hotlinked; credits on /cities#photo-credits)
   pages/admin/             Dashboard with Listings / Requests / Submissions / Alerts tabs
   components/              Navbar, Footer, ListingsBrowser, PropertyCard, InquiryForm, AlertSignup, …
 supabase/schema.sql, seed.sql   database, security rules, storage bucket, seed listings
@@ -50,7 +52,7 @@ scripts/test-*.mjs         unit, db (in-memory Postgres), e2e (Playwright), supa
 ```
 
 ## Routes
-`/` · `/apartments/:city-nj` · `/rooms-for-rent/:city-nj` · `/listing/:id/:slug` (old `/property/:id` redirects) ·
+`/` · `/listings` · `/cities` · `/how-it-works` · `/contact` · `/apartments/:city-nj` · `/rooms-for-rent/:city-nj` · `/listing/:id/:slug` (old `/property/:id` redirects) ·
 `/list-your-place` · `/about` · `/privacy` · `/keywords` · `/sitemap` · `/login` · `/forgot-password` · `/reset-password` · `/admin`
 
 ## Open items for the owner
