@@ -18,7 +18,7 @@ Demo login: `demo@apartments4newark.com` / `demo1234` (shown on /login in demo m
 ## Ground rules for changes
 - **Design system:** light theme only. Background `#fbfbfd` / `#f5f5f7`, text `#1d1d1f`, secondary `#6e6e73`, one accent `#0071e3` (use `#0062c4` for blue text on blue-tinted backgrounds, for contrast), pill buttons, `rounded-3xl` cards with `card-shadow`, `.glass` for sticky bars, 1200px max width. Reuse `Reveal`, `PropertyCard`, `InquiryForm`, `AlertSignup`, `ListingsBrowser` and the `ui/` primitives.
 - Keep the hero headline word-for-word: "Find your next place in Newark and other cities in New Jersey" (the `hero.titleA`/`titleB` keys).
-- **No stock photos of apartments, ever.** A listing with no photos shows `PhotoPlaceholder`.
+- **No stock photos of apartments, ever.** A listing with no photos shows `StreetViewPhoto` (live Google Street View of the building, labeled as the outside, only when the address has a house number and `VITE_GOOGLE_MAPS_KEY` is set; never downloaded or stored), otherwise `PhotoPlaceholder`.
 - **All data goes through `api` from `@/api/client`.** Never call Supabase, storage or fetch directly from pages. Security lives in `supabase/schema.sql` (row-level security). Any new table needs RLS and a test in `scripts/test-db.mjs`.
 - **All renter-facing text goes through `t()`** with keys in `src/locales/{en,es,pt}.js`. `npm run check:i18n` fails if a key is missing. The admin dashboard is English only.
 - Approval workflow: new listings are `pending`. The public sees a listing only when `isPubliclyVisible()` in `src/lib/listing.js` says so (published, confirmed in the last 30 days, and not fully taken).

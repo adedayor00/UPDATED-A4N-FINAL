@@ -5,6 +5,7 @@ import { applyFilters, readFilters, activeCount } from "../src/lib/filters.js";
 import { cityStats } from "../src/lib/cityStats.js";
 import { isValidPhone, formatPhone, isValidZip, isValidEmail } from "../src/lib/validate.js";
 import fs from "node:fs";
+import { streetViewAddress, streetViewUrl } from "../src/lib/streetView.js";
 import { NJ_CITIES, NJ_TOWNS, COUNTY_OF } from "../src/lib/njCities.js";
 
 let n = 0;
@@ -146,6 +147,28 @@ test("every New Jersey town is in the picker", () => {
   assert.ok(NJ_CITIES.includes("Franklin Township (Somerset County)"));
   const seed = JSON.parse(fs.readFileSync("src/data/properties.seed.json", "utf8"));
   for (const p of seed) assert.ok(NJ_CITIES.includes(p.city), `listing city not in list: ${p.city}`);
+});
+
+test("Street View only for real street addresses", () => {
+  const sv = (address, city = "Newark") => streetViewAddress({ address, city });
+  assert.equal(sv("196 Roseville Ave · Apt 46"), "196 Roseville Ave, Newark, NJ");
+  assert.equal(sv("493–495 Irvine Turner Blvd · Apt 4"), "493 Irvine Turner Blvd, Newark, NJ");
+  assert.equal(sv("239 Boyden Ave · Apt 2 · Townhouse", "Maplewood"), "239 Boyden Ave, Maplewood, NJ");
+  assert.equal(sv("282 Belleville Ave, Apt 2", "Belleville"), "282 Belleville Ave, Belleville, NJ");
+  assert.equal(sv("181 Woodside Ave (right building), Apt 3F"), "181 Woodside Ave, Newark, NJ");
+  assert.equal(sv("145 Roseville Ave, 4BR units (Apts 3, 5, 6, 7, 8)"), "145 Roseville Ave, Newark, NJ");
+  assert.equal(sv("56–58 Kent St"), "56 Kent St, Newark, NJ");
+  assert.equal(sv("98 16th Ave"), "98 16th Ave, Newark, NJ");
+  assert.equal(sv("15th Ave, Apt 1"), null, "street name that starts with a number is not a house number");
+  assert.equal(sv("Bergen St (townhouse)"), null);
+  assert.equal(sv("Garside St"), null, "no house number → would show the wrong building");
+  assert.equal(sv("South 20th St"), null);
+  assert.equal(sv("Address on request", "East Orange"), null);
+  assert.equal(sv(""), null);
+  assert.equal(streetViewUrl({ address: "196 Roseville Ave", city: "Newark" }, ""), null, "no key → no image");
+  const url = streetViewUrl({ address: "196 Roseville Ave", city: "Newark" }, "KEY");
+  assert.ok(url.startsWith("https://maps.googleapis.com/maps/api/streetview?"));
+  assert.ok(url.includes("return_error_code=true") && url.includes("source=outdoor"));
 });
 
 console.log(process.exitCode ? "unit tests FAILED" : `unit tests OK — ${n} groups`);

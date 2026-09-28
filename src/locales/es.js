@@ -126,7 +126,11 @@ export default {
     days_one: "Actualizado ayer",
     days_other: "Actualizado hace {count} días",
   },
-  photos: { onRequest: "Fotos a pedido" },
+  photos: {
+    onRequest: "Fotos a pedido",
+    streetView: "Street View · exterior del edificio",
+    streetViewAlt: "Google Street View del edificio en {address}, {city}",
+  },
   detail: {
     back: "Todos los anuncios",
     photos: "Fotos",

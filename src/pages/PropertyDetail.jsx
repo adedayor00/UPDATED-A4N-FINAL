@@ -19,7 +19,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import InquiryForm from "@/components/InquiryForm";
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
+import StreetViewPhoto from "@/components/StreetViewPhoto";
 import GalleryLightbox from "@/components/GalleryLightbox";
 import ShareButton from "@/components/ShareButton";
 import PropertyCard from "@/components/PropertyCard";
@@ -279,7 +279,7 @@ export default function PropertyDetail() {
         </div>
       ) : (
         <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] card-shadow sm:aspect-[21/8]">
-          <PhotoPlaceholder size="large" label={t("detail.photosSoon")} />
+          <StreetViewPhoto property={property} size="large" placeholderLabel={t("detail.photosSoon")} />
           <a
             href={askPhotosUrl}
             target="_blank"
