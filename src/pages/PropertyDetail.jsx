@@ -34,6 +34,8 @@ import {
   listingDescription,
   listingPath,
   listingSlug,
+  publicPhotos,
+  SHOW_LISTING_PHOTOS,
   roomsFree,
 } from "@/lib/listing";
 import { SITE_URL } from "@/lib/site";
@@ -112,7 +114,7 @@ export default function PropertyDetail() {
           name: property.title,
           description: property.description || listingDescription(property),
           url,
-          image: property.photos?.length ? property.photos : undefined,
+          image: publicPhotos(property).length ? publicPhotos(property) : undefined,
           numberOfRooms: property.bedrooms,
           numberOfBathroomsTotal: property.bathrooms,
           petsAllowed: property.pets === "yes" ? true : property.pets === "no" ? false : undefined,
@@ -162,7 +164,7 @@ export default function PropertyDetail() {
           }`,
           description: listingDescription(property),
           path,
-          image: property.photos?.[0],
+          image: publicPhotos(property)[0],
           jsonLd,
         }
       : { title: t("detail.goneTitle"), noindex: true },
@@ -184,7 +186,7 @@ export default function PropertyDetail() {
   // Old or mistyped slug → send to the canonical URL.
   if (slug !== listingSlug(property)) return <Navigate to={listingPath(property)} replace />;
 
-  const photos = property.photos || [];
+  const photos = publicPhotos(property);
   const price = text.price(property);
   const listingUrl = SITE_URL + listingPath(property);
   const similar = listings.filter((p) => p.id !== property.id && p.city === property.city).slice(0, 3);
@@ -278,7 +280,7 @@ export default function PropertyDetail() {
             )}
           </button>
         </div>
-      ) : (
+      ) : SHOW_LISTING_PHOTOS ? (
         <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] card-shadow sm:aspect-[21/8]">
           <StreetViewPhoto property={property} size="large" placeholderLabel={t("detail.photosSoon")} />
           <a
@@ -290,7 +292,7 @@ export default function PropertyDetail() {
             <Camera className="h-4 w-4" /> {t("detail.askPhotos")}
           </a>
         </div>
-      )}
+      ) : null}
       <GalleryLightbox
         photos={photos}
         open={lightbox}
@@ -301,7 +303,7 @@ export default function PropertyDetail() {
       />
 
       {/* Header */}
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className={`${SHOW_LISTING_PHOTOS ? "mt-8" : "mt-2"} flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between`}>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full bg-[#0071e3]/10 px-2.5 py-1 text-[12px] font-semibold text-[#0062c4]">
