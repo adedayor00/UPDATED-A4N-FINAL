@@ -6,6 +6,7 @@ import { cityStats } from "../src/lib/cityStats.js";
 import { isValidPhone, formatPhone, isValidZip, isValidEmail } from "../src/lib/validate.js";
 import fs from "node:fs";
 import { streetViewAddress, streetViewUrl } from "../src/lib/streetView.js";
+import { mapQuery, mapEmbedUrl, directionsUrl } from "../src/lib/mapEmbed.js";
 import { NJ_CITIES, NJ_TOWNS, COUNTY_OF } from "../src/lib/njCities.js";
 
 let n = 0;
@@ -169,6 +170,22 @@ test("Street View only for real street addresses", () => {
   const url = streetViewUrl({ address: "196 Roseville Ave", city: "Newark" }, "KEY");
   assert.ok(url.startsWith("https://maps.googleapis.com/maps/api/streetview?"));
   assert.ok(url.includes("return_error_code=true") && url.includes("source=outdoor"));
+});
+
+test("Free map never shows more than the listing does", () => {
+  const q = (address, city = "Newark", neighborhood = "") => mapQuery({ address, city, neighborhood });
+  assert.equal(q("196 Roseville Ave · Apt 46"), "196 Roseville Ave, Newark, NJ");
+  assert.equal(q("493–495 Irvine Turner Blvd · Apt 4"), "493 Irvine Turner Blvd, Newark, NJ");
+  assert.equal(q("239 Boyden Ave · Apt 2 · Townhouse", "Maplewood"), "239 Boyden Ave, Maplewood, NJ");
+  assert.equal(q("South 20th St", "Newark", "West Ward"), "Newark, NJ", "bare street → city only");
+  assert.equal(q("15th Ave, Apt 1"), "Newark, NJ");
+  assert.equal(q("Address on request", "East Orange"), "East Orange, NJ");
+  assert.equal(q("", "Newark"), "Newark, NJ");
+  assert.equal(mapQuery({}), null);
+  const url = mapEmbedUrl({ address: "196 Roseville Ave", city: "Newark" });
+  assert.ok(url.startsWith("https://www.google.com/maps?q=") && url.endsWith("output=embed"));
+  assert.ok(!url.includes("key="), "keyless: never billed");
+  assert.ok(directionsUrl({ address: "Garside St", city: "Newark" }).endsWith("destination=Newark%2C%20NJ"));
 });
 
 console.log(process.exitCode ? "unit tests FAILED" : `unit tests OK — ${n} groups`);
