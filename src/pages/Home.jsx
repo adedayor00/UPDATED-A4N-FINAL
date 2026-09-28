@@ -58,7 +58,12 @@ export default function Home() {
   return (
     <div>
       <Hero counts={counts} />
-      <TrustStrip listings={listings.length} cities={cities.length} roomsFrom={lowestRent(listings, "rooms")} />
+      <TrustStrip
+        listings={listings.length}
+        cities={cities.length}
+        roomsFrom={lowestRent(listings, "rooms")}
+        unitsFrom={lowestRent(listings, "units")}
+      />
       <FeaturedCarousel properties={newest} />
       <HowItWorks />
       <CityTiles stats={stats} />
