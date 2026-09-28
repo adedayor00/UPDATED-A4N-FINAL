@@ -31,6 +31,10 @@ async function run(name, viewport, fn) {
     locale: "en-US",
     reducedMotion: "reduce",
   });
+  // City photos load from Wikimedia; serve a stand-in so tests don't depend on the network.
+  await ctx.route(/commons\.wikimedia\.org|upload\.wikimedia\.org/, (r) =>
+    r.fulfill({ status: 200, contentType: "image/svg+xml", body: '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="5"><rect width="8" height="5" fill="#556"/></svg>' }),
+  );
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
@@ -226,6 +230,33 @@ for (const vp of VIEWPORTS) {
     await page.getByText("You're on the list").waitFor();
   });
 
+  await run("menu links open real pages", vp, async (page, { mobile, tag }) => {
+    await page.goto(BASE + "/");
+    for (const [name, url, h1] of [
+      ["Listings", "/listings", "Rooms & apartments for rent"],
+      ["Cities", "/cities", "Cities we cover"],
+      ["How it works", "/how-it-works", "How renting with us works"],
+      ["About", "/about", null],
+    ]) {
+      if (mobile) await page.getByRole("button", { name: "Open menu" }).click();
+      await page.getByRole("navigation").getByRole("link", { name, exact: true }).first().click();
+      await page.waitForURL(BASE + url);
+      if (h1) await page.getByRole("heading", { level: 1, name: h1 }).waitFor();
+      await noHorizontalScroll(page, url);
+      if (h1) await axe(page, `${url} ${vp.width}`);
+    }
+    await page.goto(BASE + "/listings");
+    await page.getByText("11 places available").waitFor();
+    await page.goto(BASE + "/cities");
+    await page.locator("a[href='/apartments/newark-nj']").first().waitFor();
+    expect((await page.locator("a[href='/apartments/newark-nj'] img").count()) === 1, "Newark tile has no photo");
+    await page.locator("#photo-credits").getByText(/Newark Penn Station/).waitFor();
+    await page.goto(BASE + "/contact");
+    await page.getByRole("heading", { level: 1, name: "Send us a request" }).waitFor();
+    await axe(page, `/contact ${vp.width}`);
+    await page.screenshot({ path: `${OUT}/${tag}.png`, fullPage: true });
+  });
+
   await run("listing page + inquiry flow", vp, async (page, { mobile, tag }) => {
     await page.goto(BASE + "/");
     await page.locator("#listings a[href*='south-20th-st']").first().click();
@@ -257,10 +288,7 @@ for (const vp of VIEWPORTS) {
     await page.getByText("(862) 555-0100").first().waitFor();
     const wa = page.getByRole("button", { name: "WhatsApp" });
     await wa.waitFor();
-    expect(
-      (await page.getByRole("button", { name: "Instagram" }).count()) === 0,
-      "placeholder Instagram button is showing",
-    );
+    // Instagram shows only when INSTAGRAM_USERNAME is set in src/lib/contact.js (it is now).
     await axe(page, `listing ${vp.width}`);
     await page.screenshot({ path: `${OUT}/${tag}.png`, fullPage: true });
   });
@@ -433,7 +461,7 @@ await run("pre-built pages have real content", { width: 1440, height: 900 }, asy
     "listing og:title missing",
   );
   const sm = await (await ctx.request.get(BASE + "/sitemap.xml")).text();
-  expect((sm.match(/<loc>/g) || []).length === 22, "sitemap should list 22 pages");
+  expect((sm.match(/<loc>/g) || []).length === 26, "sitemap should list 26 pages");
   expect(!sm.includes("/admin"), "admin in sitemap");
   const app = await (await ctx.request.get(BASE + "/admin")).text();
   expect(!app.includes('class="pr"'), "fallback shell should be empty");

@@ -269,6 +269,26 @@ const simple = [
   ["/privacy", "Privacy", "What Apartments4Newark collects when you send a request, and how it's used."],
   ["/keywords", "Search by Area", "Browse rentals by New Jersey city or neighborhood."],
   ["/sitemap", "Site Map", "Every page on Apartments4Newark."],
+  [
+    "/listings",
+    "Rooms & Apartments for Rent in New Jersey",
+    "Every room and apartment we have for rent in Newark and across New Jersey. Filter by city, budget and room type. No sign-up, no fees to ask or tour.",
+  ],
+  [
+    "/cities",
+    "Cities We Cover in New Jersey",
+    "Rooms and apartments for rent city by city: Newark, East Orange, Irvington, Elizabeth, Jersey City and more across New Jersey.",
+  ],
+  [
+    "/how-it-works",
+    "How It Works",
+    "How renting through Apartments4Newark works: browse, send one short form, and we text or WhatsApp you back. No account and no fees to ask or tour.",
+  ],
+  [
+    "/contact",
+    "Contact Us — Send a Request",
+    "Tell us what you're looking for in Newark or anywhere in New Jersey and we'll text or WhatsApp you back. No account, no fees.",
+  ],
 ];
 for (const [route, title, description] of simple) {
   written.push(page({ route, title, description, body: `<h1>${esc(title)}</h1><p>${esc(description)}</p>` }));
