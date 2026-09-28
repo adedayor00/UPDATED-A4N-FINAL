@@ -88,6 +88,11 @@ export default function Footer() {
                   {t("footer.sitemap")}
                 </Link>
               </li>
+              <li>
+                <Link to="/photo-credits" className={link}>
+                  {t("pages.photoCredits")}
+                </Link>
+              </li>
             </ul>
           </div>
           <div>

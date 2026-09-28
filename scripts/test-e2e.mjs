@@ -250,7 +250,8 @@ for (const vp of VIEWPORTS) {
     await page.goto(BASE + "/cities");
     await page.locator("a[href='/apartments/newark-nj']").first().waitFor();
     expect((await page.locator("a[href='/apartments/newark-nj'] img").count()) === 1, "Newark tile has no photo");
-    await page.locator("#photo-credits").getByText(/Newark Penn Station/).waitFor();
+    await page.goto(BASE + "/photo-credits");
+    await page.getByText(/Newark Penn Station/).waitFor();
     await page.goto(BASE + "/contact");
     await page.getByRole("heading", { level: 1, name: "Send us a request" }).waitFor();
     await axe(page, `/contact ${vp.width}`);

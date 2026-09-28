@@ -386,7 +386,6 @@ export default {
     aboutCities: "All cities",
     openFull: "Open the full listings page",
     landmarkAlt: "{landmark} in {city}, New Jersey",
-    photoCredit: "Photo credit",
     listingsTitle: "Rooms & apartments for rent",
     listingsSub: "Every place we have right now in Newark and across New Jersey. Search, filter by budget and room type, or sort by rent.",
     byCity: "Browse by city",

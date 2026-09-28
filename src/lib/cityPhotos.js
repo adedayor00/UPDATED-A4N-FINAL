@@ -1,6 +1,6 @@
 // A well-known landmark for each city we cover, used on city tiles and city pages.
 // All photos are from Wikimedia Commons under free licenses; credits are shown on
-// /cities#photo-credits (required by CC BY / CC BY-SA). Images load straight from
+// /photo-credits (linked from the footer) (required by CC BY / CC BY-SA). Images load straight from
 // Wikimedia at a reduced width, so nothing is copied into this repo.
 // Pure module (no React, no "@/" imports) so Node scripts can use it.
 

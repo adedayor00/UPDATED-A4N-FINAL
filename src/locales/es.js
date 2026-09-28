@@ -392,7 +392,6 @@ export default {
     aboutCities: "Todas las ciudades",
     openFull: "Abrir la página completa de anuncios",
     landmarkAlt: "{landmark} en {city}, Nueva Jersey",
-    photoCredit: "Crédito de la foto",
     listingsTitle: "Cuartos y apartamentos en alquiler",
     listingsSub: "Todo lo que tenemos ahora en Newark y en Nueva Jersey. Busca, filtra por presupuesto y tipo, u ordena por renta.",
     byCity: "Buscar por ciudad",

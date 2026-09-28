@@ -22,6 +22,7 @@ const Cities = lazy(() => import("@/pages/Cities"));
 const HowItWorksPage = lazy(() => import("@/pages/HowItWorksPage"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
+const PhotoCredits = lazy(() => import("@/pages/PhotoCredits"));
 const Keywords = lazy(() => import("@/pages/Keywords"));
 const SiteMap = lazy(() => import("@/pages/SiteMap"));
 const Login = lazy(() => import("@/pages/Login"));
@@ -67,6 +68,7 @@ export default function App() {
                   <Route path="/list-your-place" element={<ListYourPlace />} />
                   <Route path="/about" element={<AboutUs />} />
                   <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/photo-credits" element={<PhotoCredits />} />
                   <Route path="/keywords" element={<Keywords />} />
                   <Route path="/sitemap" element={<SiteMap />} />
                   <Route element={<ProtectedRoute />}>

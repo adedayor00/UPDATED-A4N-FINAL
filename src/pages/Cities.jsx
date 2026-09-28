@@ -7,7 +7,6 @@ import AlertSignup from "@/components/AlertSignup";
 import { CityTile, TARGET_CITIES } from "@/components/home/CityTiles";
 import { usePublicListings } from "@/hooks/useListings";
 import { cityStats } from "@/lib/cityStats";
-import { CITY_PHOTOS } from "@/lib/cityPhotos";
 import { SITE_URL } from "@/lib/site";
 import { useSeo } from "@/lib/seo";
 import { useT } from "@/lib/i18n";
@@ -83,26 +82,6 @@ export default function Cities() {
         </div>
       </section>
 
-      <section id="photo-credits" className="scroll-mt-16 border-t border-border bg-[#f5f5f7]">
-        <div className="mx-auto max-w-[1200px] px-5 py-10 sm:px-6">
-          <h2 className="font-heading text-lg font-semibold">{t("pages.photoCredits")}</h2>
-          <p className="mt-1 text-[13px] text-[#6e6e73]">{t("pages.photoCreditsText")}</p>
-          <ul className="mt-4 grid gap-x-8 gap-y-1 text-[13px] text-[#6e6e73] sm:grid-cols-2">
-            {CITY_PHOTOS.map((p) => (
-              <li key={p.city}>
-                <a
-                  href={p.source}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex min-h-[44px] items-center hover:text-[#0071e3] sm:min-h-0 sm:py-1"
-                >
-                  {p.city}: {p.landmark} — {p.author}, {p.license}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
     </div>
   );
 }

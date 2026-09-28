@@ -165,10 +165,7 @@ export default function CityPage({ kind = "apartments" }) {
                 onError={(e) => (e.currentTarget.closest("figure").style.display = "none")}
               />
               <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-3 pt-8 text-[12px] text-white/85">
-                {photo.landmark} ·{" "}
-                <Link to="/cities#photo-credits" className="underline underline-offset-2 hover:text-white">
-                  {t("pages.photoCredit")}
-                </Link>
+                {photo.landmark}
               </figcaption>
             </figure>
           )}
