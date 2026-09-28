@@ -30,7 +30,7 @@ export default function Keywords() {
 
   const submit = (e) => {
     e.preventDefault();
-    if (term.trim()) navigate(`/?q=${encodeURIComponent(term.trim())}`, { state: { scrollTo: "listings" } });
+    if (term.trim()) navigate(`/listings?q=${encodeURIComponent(term.trim())}`);
   };
 
   return (
@@ -78,7 +78,7 @@ export default function Keywords() {
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {areas.map((n) => (
-                  <Link key={n} to={`/?q=${encodeURIComponent(n)}`} state={{ scrollTo: "listings" }} className={chip}>
+                  <Link key={n} to={`/listings?q=${encodeURIComponent(n)}`} className={chip}>
                     {n}
                   </Link>
                 ))}

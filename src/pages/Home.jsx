@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import Hero from "@/components/home/Hero";
 import TrustStrip from "@/components/home/TrustStrip";
 import FeaturedCarousel from "@/components/home/FeaturedCarousel";
@@ -76,7 +77,12 @@ export default function Home() {
             </h2>
           </Reveal>
           <Reveal delay={80}>
-            <p className="mt-2 text-[#6e6e73]">{t("listings.sub")}</p>
+            <p className="mt-2 text-[#6e6e73]">
+              {t("listings.sub")}{" "}
+              <Link to="/listings" className="font-medium text-[#0071e3] hover:underline">
+                {t("pages.openFull")}
+              </Link>
+            </p>
           </Reveal>
           <ListingsBrowser listings={listings} loading={loading} error={error} onRetry={retry} />
         </div>

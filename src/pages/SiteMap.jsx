@@ -17,7 +17,9 @@ export default function SiteMap() {
       title: t("sitemap.browse"),
       icon: LayoutGrid,
       links: [
-        { label: t("sitemap.all"), to: "/" },
+        { label: t("nav.home"), to: "/" },
+        { label: t("sitemap.all"), to: "/listings" },
+        { label: t("nav.cities"), to: "/cities" },
         ...cities.map((c) => ({ label: t("footer.apartmentsIn", { city: c }), to: cityPath(c) })),
         ...listings.map((p) => ({ label: `${p.title} — ${p.city}`, to: listingPath(p) })),
       ],
@@ -26,6 +28,7 @@ export default function SiteMap() {
       title: t("sitemap.about"),
       icon: Info,
       links: [
+        { label: t("nav.how"), to: "/how-it-works" },
         { label: t("footer.about"), to: "/about" },
         { label: t("nav.listYourPlace"), to: "/list-your-place" },
         { label: t("footer.areas"), to: "/keywords" },
@@ -36,6 +39,7 @@ export default function SiteMap() {
       title: t("sitemap.contact"),
       icon: MessageCircle,
       links: [
+        { label: t("nav.sendRequest"), to: "/contact" },
         { label: "WhatsApp", href: whatsappUrl() },
         { label: EMAIL, href: `mailto:${EMAIL}` },
         { label: t("footer.manager"), to: "/login" },

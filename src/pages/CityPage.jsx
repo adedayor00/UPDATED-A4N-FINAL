@@ -9,6 +9,7 @@ import { usePublicListings } from "@/hooks/useListings";
 import { NJ_CITIES } from "@/lib/njCities";
 import { cityFromSlug, cityPath, isRooms, lowestRent } from "@/lib/listing";
 import { cityStats } from "@/lib/cityStats";
+import { cityPhoto } from "@/lib/cityPhotos";
 import { SITE_URL } from "@/lib/site";
 import { useSeo } from "@/lib/seo";
 import { useT } from "@/lib/i18n";
@@ -31,6 +32,7 @@ export default function CityPage({ kind = "apartments" }) {
   const unitFrom = lowestRent(inCity, "units");
   const otherCities = Object.keys(stats).filter((c) => c !== city);
   const path = city ? cityPath(city, kind) : undefined;
+  const photo = city ? cityPhoto(city, 960) : null;
 
   const h1 = rooms ? t("city.roomsTitle", { city }) : t("city.title", { city });
   const faqs = city
@@ -73,7 +75,8 @@ export default function CityPage({ kind = "apartments" }) {
                 "@type": "BreadcrumbList",
                 itemListElement: [
                   { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL + "/" },
-                  { "@type": "ListItem", position: 2, name: `${city}, NJ`, item: SITE_URL + path },
+                  { "@type": "ListItem", position: 2, name: "Cities", item: SITE_URL + "/cities" },
+                  { "@type": "ListItem", position: 3, name: `${city}, NJ`, item: SITE_URL + path },
                 ],
               },
               {
@@ -101,8 +104,14 @@ export default function CityPage({ kind = "apartments" }) {
               {t("nav.home")}
             </Link>
             <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+            <Link to="/cities" className="inline-flex h-11 items-center hover:text-foreground">
+              {t("nav.cities")}
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
             <span aria-current="page">{city}, NJ</span>
           </nav>
+          <div className={photo ? "grid gap-8 lg:grid-cols-[1fr_440px] lg:items-center" : ""}>
+          <div>
           <h1 className="mt-2 max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl">{h1}</h1>
           <p className="mt-4 max-w-2xl text-[17px] text-[#6e6e73]">
             {loading
@@ -142,6 +151,27 @@ export default function CityPage({ kind = "apartments" }) {
             >
               {t("city.roomsTab")}
             </Link>
+          </div>
+          </div>
+          {photo && (
+            <figure className="relative overflow-hidden rounded-3xl bg-[#1d1d1f] card-shadow">
+              <img
+                src={photo.src}
+                srcSet={photo.srcSet}
+                sizes="(min-width: 1024px) 440px, 100vw"
+                alt={t("pages.landmarkAlt", { landmark: photo.landmark, city })}
+                className="aspect-[16/10] w-full object-cover"
+                decoding="async"
+                onError={(e) => (e.currentTarget.closest("figure").style.display = "none")}
+              />
+              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-4 pb-3 pt-8 text-[12px] text-white/85">
+                {photo.landmark} ·{" "}
+                <Link to="/cities#photo-credits" className="underline underline-offset-2 hover:text-white">
+                  {t("pages.photoCredit")}
+                </Link>
+              </figcaption>
+            </figure>
+          )}
           </div>
         </div>
       </section>

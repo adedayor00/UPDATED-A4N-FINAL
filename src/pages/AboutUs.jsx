@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Heart, ShieldCheck, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/Logo";
-import SectionLink from "@/components/SectionLink";
 import { CONTACT_PERSON } from "@/lib/contact";
 import { useSeo } from "@/lib/seo";
 import { useT } from "@/lib/i18n";
@@ -53,7 +52,7 @@ export default function AboutUs() {
             <Link to="/list-your-place">{t("nav.listYourPlace")}</Link>
           </Button>
           <Button asChild variant="outline">
-            <SectionLink to="contact">{t("nav.sendRequest")}</SectionLink>
+            <Link to="/contact">{t("nav.sendRequest")}</Link>
           </Button>
         </div>
       </div>
