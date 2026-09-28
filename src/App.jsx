@@ -13,10 +13,14 @@ import Home from "@/pages/Home";
 import PropertyDetail from "@/pages/PropertyDetail";
 import CityPage from "@/pages/CityPage";
 import PageNotFound from "@/pages/PageNotFound";
+import Listings from "@/pages/Listings";
 
 // Pages most renters never open load on demand, keeping the first load small.
 const ListYourPlace = lazy(() => import("@/pages/ListYourPlace"));
 const AboutUs = lazy(() => import("@/pages/AboutUs"));
+const Cities = lazy(() => import("@/pages/Cities"));
+const HowItWorksPage = lazy(() => import("@/pages/HowItWorksPage"));
+const Contact = lazy(() => import("@/pages/Contact"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Keywords = lazy(() => import("@/pages/Keywords"));
 const SiteMap = lazy(() => import("@/pages/SiteMap"));
@@ -52,6 +56,10 @@ export default function App() {
               <Routes>
                 <Route element={<Layout />}>
                   <Route path="/" element={<Home />} />
+                  <Route path="/listings" element={<Listings />} />
+                  <Route path="/cities" element={<Cities />} />
+                  <Route path="/how-it-works" element={<HowItWorksPage />} />
+                  <Route path="/contact" element={<Contact />} />
                   <Route path="/listing/:id/:slug?" element={<PropertyDetail />} />
                   <Route path="/property/:id" element={<LegacyProperty />} />
                   <Route path="/apartments/:city" element={<CityPage kind="apartments" />} />
