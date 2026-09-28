@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { BedDouble, Bath, ChevronRight, BadgeCheck } from "lucide-react";
 import { Image } from "@/components/ui/image";
 import PhotoPlaceholder from "@/components/PhotoPlaceholder";
-import { listingPath } from "@/lib/listing";
+import { listingPath, publicPhotos, SHOW_LISTING_PHOTOS } from "@/lib/listing";
 import { useListingText } from "@/lib/useListingText";
 import { useT } from "@/lib/i18n";
 
 export default function PropertyCard({ property }) {
   const { t } = useT();
   const text = useListingText();
-  const photo = property.photos?.[0];
+  const photo = publicPhotos(property)[0];
   const price = text.price(property);
 
   return (
@@ -18,6 +18,7 @@ export default function PropertyCard({ property }) {
       to={listingPath(property)}
       className="group relative flex h-full flex-col overflow-hidden rounded-3xl bg-card card-shadow transition-all duration-300 hover:-translate-y-1 hover:card-shadow-lg"
     >
+      {SHOW_LISTING_PHOTOS && (
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f5f5f7] sm:aspect-[4/3]">
         {photo ? (
           <Image
@@ -39,7 +40,20 @@ export default function PropertyCard({ property }) {
           </span>
         )}
       </div>
+      )}
       <div className="flex flex-1 flex-col p-4">
+        {!SHOW_LISTING_PHOTOS && (
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#0071e3]/10 px-2.5 py-1 text-[11px] font-semibold text-[#0062c4]">
+              {text.badge(property)}
+            </span>
+            {property.accepts_vouchers && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#f5f5f7] px-2.5 py-1 text-[11px] font-semibold text-[#1d1d1f]">
+                <BadgeCheck className="h-3.5 w-3.5 text-[#0071e3]" /> {t("cards.vouchers")}
+              </span>
+            )}
+          </div>
+        )}
         <p className="truncate text-[12px] font-medium uppercase tracking-wide text-[#6e6e73]">
           {property.city}
           {property.neighborhood ? ` · ${property.neighborhood}` : ""}
