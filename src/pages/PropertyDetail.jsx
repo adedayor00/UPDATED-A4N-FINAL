@@ -20,6 +20,7 @@ import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import InquiryForm from "@/components/InquiryForm";
 import StreetViewPhoto from "@/components/StreetViewPhoto";
+import ListingMap from "@/components/ListingMap";
 import GalleryLightbox from "@/components/GalleryLightbox";
 import ShareButton from "@/components/ShareButton";
 import PropertyCard from "@/components/PropertyCard";
@@ -399,6 +400,8 @@ export default function PropertyDetail() {
               </ul>
             </section>
           )}
+
+          <ListingMap property={property} />
 
           <section className="rounded-2xl bg-[#f5f5f7] p-5 text-[14px] leading-relaxed text-[#6e6e73]">
             <h2 className="font-heading text-[15px] font-semibold text-foreground">{t("detail.goodToKnow")}</h2>
