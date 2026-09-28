@@ -29,6 +29,8 @@ export default {
     live: "Listings live",
     cities: "NJ cities covered",
     roomsFrom: "Rooms from, per month",
+    bothFrom: "Rooms / apartments from, per month",
+    unitsFrom: "Apartments from, per month",
     fees: "Fees to ask or tour",
     toTour: "Fees to tour",
   },

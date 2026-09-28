@@ -29,6 +29,8 @@ export default {
     live: "Anuncios activos",
     cities: "Ciudades de NJ",
     roomsFrom: "Cuartos desde, al mes",
+    bothFrom: "Cuartos / apartamentos desde, al mes",
+    unitsFrom: "Apartamentos desde, al mes",
     fees: "Costo por preguntar o visitar",
     toTour: "Costo por visitar",
   },
