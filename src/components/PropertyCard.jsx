@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BedDouble, Bath, ChevronRight, BadgeCheck } from "lucide-react";
 import { Image } from "@/components/ui/image";
-import PhotoPlaceholder from "@/components/PhotoPlaceholder";
+import StreetViewPhoto from "@/components/StreetViewPhoto";
 import { listingPath } from "@/lib/listing";
 import { useListingText } from "@/lib/useListingText";
 import { useT } from "@/lib/i18n";
@@ -26,7 +26,7 @@ export default function PropertyCard({ property }) {
             className="h-full w-full transition-transform duration-500 group-hover:scale-[1.05]"
           />
         ) : (
-          <PhotoPlaceholder />
+          <StreetViewPhoto property={property} />
         )}
         <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-[#0071e3] backdrop-blur">
           {text.badge(property)}
