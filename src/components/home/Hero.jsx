@@ -4,7 +4,6 @@ import { Search, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import SectionLink from "@/components/SectionLink";
 import { BUDGETS } from "@/lib/filters";
 import CityCombobox from "@/components/CityCombobox";
 import { useT } from "@/lib/i18n";
@@ -22,7 +21,7 @@ export default function Hero({ counts = {} }) {
     if (city !== "all") p.set("city", city);
     if (type !== "all") p.set("type", type);
     if (max !== "all") p.set("max", max);
-    navigate({ pathname: "/", search: p.toString() ? `?${p}` : "" }, { state: { scrollTo: "listings" } });
+    navigate({ pathname: "/listings", search: p.toString() ? `?${p}` : "" });
   };
 
   return (
@@ -97,12 +96,12 @@ export default function Hero({ counts = {} }) {
         </form>
 
         <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-1">
-          <SectionLink
-            to="contact"
+          <Link
+            to="/contact"
             className="inline-flex h-11 items-center gap-1 text-[15px] font-medium text-[#0071e3] hover:underline"
           >
             {t("hero.request")} <ChevronRight className="h-4 w-4" />
-          </SectionLink>
+          </Link>
           <Link
             to="/list-your-place"
             className="inline-flex h-11 items-center gap-1 text-[15px] font-medium text-[#0071e3] hover:underline"
