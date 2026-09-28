@@ -2,6 +2,14 @@
 // page generator (scripts/prerender.mjs) can import this file directly.
 
 export const SITE_URL = "https://apartments4newark.com";
+
+// Text-only listings: when false, the public site shows no photos, placeholders or
+// Street View for any listing (cards, listing page, share previews). Photos already
+// uploaded stay saved in the database; set this back to true to show them again.
+export const SHOW_LISTING_PHOTOS = false;
+
+/** Photos to show publicly for a listing ([] while photos are switched off). */
+export const publicPhotos = (p) => (SHOW_LISTING_PHOTOS ? p?.photos || [] : []);
 export const SITE_NAME = "Apartments4Newark";
 
 // A published listing drops off the public site this many days after the
