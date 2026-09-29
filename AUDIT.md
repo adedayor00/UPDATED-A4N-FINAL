@@ -68,3 +68,16 @@ Two full review passes over the Base44 export, covering front end, back end, dat
 - A map view (needs geocoded addresses; many listings are "address on request").
 - Renter accounts and saved favorites (the site deliberately needs no sign-up today).
 - Automatic SMS alerts (see 7).
+
+## Security check — Sep 29, 2026
+19-point pre-launch checklist run against the code and the live Supabase project.
+- Fixed in this pass: manager access now requires a confirmed email in `auth.users`
+  (not just the email in the login token); size limits on every public form field;
+  rate limits on requests, alerts and submissions (per phone and site-wide);
+  fixed `search_path` on `touch_updated_date`; Content-Security-Policy header in
+  `netlify.toml`; removed a stray `src/components/.env.example`. All applied to the
+  live database as migration `security_hardening_2026_09_29`.
+- Intentional, not bugs: `admins` has RLS with no policies (nobody can read it via the
+  API); `is_admin()` is callable by visitors (RLS needs it; it only returns true/false).
+- Owner actions: in Supabase → Authentication, turn off "Allow new users to sign up"
+  (the site has no sign-up) and turn on leaked-password protection if your plan has it.

@@ -15,13 +15,20 @@ await db.exec(`
   create schema auth; create schema storage;
   create function auth.jwt() returns jsonb language sql stable as $$
     select coalesce(nullif(current_setting('request.jwt.claims', true), ''), '{}')::jsonb $$;
+  create function auth.uid() returns uuid language sql stable as $$
+    select nullif(auth.jwt() ->> 'sub', '')::uuid $$;
+  create table auth.users (id uuid primary key, email text, email_confirmed_at timestamptz);
+  insert into auth.users values
+    ('00000000-0000-0000-0000-00000000000a', 'manager@apartments4newark.com', now()),
+    ('00000000-0000-0000-0000-00000000000b', 'someone@example.com', now()),
+    ('00000000-0000-0000-0000-00000000000c', 'second@apartments4newark.com', null);
   create table storage.buckets (id text primary key, name text, public boolean, file_size_limit bigint, allowed_mime_types text[]);
   create table storage.objects (id serial primary key, bucket_id text, name text);
   create function storage.foldername(name text) returns text[] language sql immutable as $$
     select (string_to_array(name, '/'))[1:array_length(string_to_array(name, '/'), 1) - 1] $$;
   alter table storage.objects enable row level security;
   grant usage on schema auth, storage to anon, authenticated;
-  grant execute on function auth.jwt() to anon, authenticated;
+  grant execute on function auth.jwt(), auth.uid() to anon, authenticated;
   grant all on storage.objects to anon, authenticated;
   grant usage, select on all sequences in schema storage to anon, authenticated;
   grant select on storage.buckets to anon, authenticated;
@@ -34,7 +41,7 @@ await db.exec(fs.readFileSync("supabase/seed.sql", "utf8"));
 await db.exec(`
   grant usage on schema public to anon, authenticated;
   grant all on all tables in schema public to anon, authenticated;
-  insert into public.admins(email) values ('Manager@Apartments4Newark.com');
+  insert into public.admins(email) values ('Manager@Apartments4Newark.com'), ('second@apartments4newark.com');
   update public.properties set status = 'pending' where id = '6ab29083d137cf0e35e581b6';
 `);
 
@@ -42,9 +49,12 @@ async function as(who, fn) {
   await db.exec("reset role; select set_config('request.jwt.claims', '', false);");
   if (who === "anon") await db.exec("set role anon");
   else {
-    const email = who === "manager" ? "manager@apartments4newark.com" : "someone@example.com";
+    const [email, sub] = {
+      manager: ["manager@apartments4newark.com", "00000000-0000-0000-0000-00000000000a"],
+      unconfirmed: ["second@apartments4newark.com", "00000000-0000-0000-0000-00000000000c"],
+    }[who] || ["someone@example.com", "00000000-0000-0000-0000-00000000000b"];
     await db.exec(
-      `select set_config('request.jwt.claims', '${JSON.stringify({ email, role: "authenticated" })}', false); set role authenticated;`,
+      `select set_config('request.jwt.claims', '${JSON.stringify({ email, sub, role: "authenticated" })}', false); set role authenticated;`,
     );
   }
   try {
@@ -195,6 +205,33 @@ await check("check constraints reject bad values", () =>
     await rejects(q("update properties set rent_type = 'weekly'"), "bad rent_type");
     await rejects(q("update properties set pets = 'maybe'"), "bad pets");
     await rejects(q("update properties set status = 'deleted'"), "bad status");
+  }),
+);
+
+await check("an unconfirmed sign-up with a manager's email is not a manager", () =>
+  as("unconfirmed", async () => {
+    const { rows } = await q("select public.is_admin() as a");
+    assert.equal(rows[0].a, false);
+    assert.equal((await q("select * from inquiries")).rows.length, 0);
+  }),
+);
+
+await check("public form fields have size limits", () =>
+  as("anon", async () => {
+    await rejects(q("insert into inquiries (name, phone, city) values ('T','(973) 555-0199', repeat('x', 121))"), "huge city");
+    await rejects(q("insert into alerts (phone, max_rent) values ('(973) 555-0199', 99999999)"), "absurd max rent");
+    await rejects(
+      q(`insert into listing_submissions (contact_name, contact_phone, photos) values ('A','(973) 555-0199', '${JSON.stringify(Array(11).fill("x"))}')`),
+      "11 photos",
+    );
+  }),
+);
+
+await check("forms are rate-limited per phone number", () =>
+  as("anon", async () => {
+    for (let i = 0; i < 5; i++) await q("insert into inquiries (name, phone) values ('Bot','(201) 555-0142')");
+    await rejects(q("insert into inquiries (name, phone) values ('Bot','201-555-0142')"), "6th request in an hour accepted");
+    await q("insert into inquiries (name, phone) values ('Real person','(201) 555-0143')");
   }),
 );
 

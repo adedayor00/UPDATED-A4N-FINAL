@@ -68,6 +68,8 @@ const esc = (s = "") =>
 const money = (n) => `$${Number(n).toLocaleString("en-US")}`;
 const ld = (obj) => `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`;
 
+// NOTE: the inline <script> below is allowed by its sha256 hash in netlify.toml
+// (Content-Security-Policy). Change it and the hash must be updated.
 // Minimal styling for the static summary. Hidden as soon as JavaScript runs
 // (the app shows the same content); crawlers without JavaScript read it.
 const STYLE = `<script>document.documentElement.classList.add("js")</script><style>.js .pr{display:none}.pr{max-width:1100px;margin:0 auto;padding:32px 20px;font:17px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;color:#1d1d1f}.pr h1{font-size:34px;line-height:1.1;letter-spacing:-.02em;margin:0 0 12px}.pr h2{font-size:20px;margin:28px 0 8px}.pr p{color:#6e6e73;margin:0 0 12px}.pr ul{padding-left:20px}.pr li{margin:6px 0}.pr a{color:#0071e3}</style>`;
